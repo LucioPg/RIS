@@ -1,0 +1,12 @@
+{% extends 'main/base.html' %}
+{% block title %}DSM - {{ categoria.name }} {% endblock title %}
+{% block content %}
+    <h1>{{ categoria.name }}</h1>
+    <div class="container">
+        <ul>
+            {% for prodotto in prodotti %}
+                <li>{{ prodotto.name }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock content %}

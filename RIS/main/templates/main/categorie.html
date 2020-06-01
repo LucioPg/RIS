@@ -1,0 +1,12 @@
+{% extends 'main/base.html' %}
+{% block title %}DSM - Categorie {% endblock title %}
+{% block content %}
+    <h1>Categorie</h1>
+    <div class="container">
+        <ul>
+            {% for categoria in categorie %}
+                <li>{{ categoria.name }} --- id={{ categoria.id }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock content %}
