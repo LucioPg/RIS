@@ -20,6 +20,7 @@ def categorie(request):
 def categorie_create(request):
     if request.method == "POST":
         form = CreaCategoria(request.POST)
+        print(request.POST)
         if form.is_valid():
             name = form.cleaned_data["name"]
             unit = form.cleaned_data["unit"]
