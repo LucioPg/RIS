@@ -10,3 +10,26 @@
         </ul>
     </div>
 {% endblock content %}
+
+{% block footer %}
+<div class="container"></div>
+
+
+<style>
+#btn-container{
+    margin-left:100px;
+}
+</style>
+    <div id="btn-container">
+    <a href="/categorie/create" class="btn btn-primary">Aggiungi</a>
+    <a href="#" class="btn btn-primary">Cerca</a>
+    <a href="#" class="btn btn-primary">Elenca</a>
+    </div>
+{#<button id="nuovaCategoria" class="btn btn-primary" >Aggiungi</button>#}
+{#<script type="text/javascript">#}
+{#    document.getElementById("nuovaCategoria").onclick = function () {#}
+{#        location.href = "/categorie/create";#}
+{#    };#}
+{#</script>#}
+</div>
+{% endblock footer %}
