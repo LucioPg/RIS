@@ -1,0 +1,18 @@
+{% extends "main/base.html" %}
+
+{% block title %}
+Crea un nuovo account
+{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <br>
+    <div class="container">
+    <form method="POST" class="form-group">
+    {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success" name="salva">Salva</button>
+        <button type="clear" class="btn btn-secondary" name="reset">Reset</button>
+    </form>
+    </div>
+
+{% endblock %}

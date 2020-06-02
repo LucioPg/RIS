@@ -1,32 +1,45 @@
 {% extends 'main/base.html' %}
-{% block title %}DSM - Dashboard {% endblock title %}
-{% block content %}
-    <h1>Dashboard</h1>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Categorie Prodotti</h5>
-                        <p class="card-text">Aggiungi, cerca, elenca le categorie dei prodotti.</p>
-                        <a href="#" class="btn btn-primary">Aggiungi</a>
-                        <a href="#" class="btn btn-primary">Cerca</a>
-                        <a href="#" class="btn btn-primary">Elenca</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Prodotti</h5>
-                        <p class="card-text">Aggiungi, cerca, elenca i prodotti.</p>
-                        <a href="#" class="btn btn-primary">Aggiungi</a>
-                        <a href="#" class="btn btn-primary">Cerca</a>
-                        <a href="#" class="btn btn-primary">Elenca</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+{% load static %}
+{% block title %} Dashboard {% endblock title %}
+{% if user.is_authenticated %}
+    {% block content %}
+        <h1>Dashboard</h1>
 
-    </div>
-{% endblock content %}
+        <div class="container">
+            <div class="row">
+                <style>
+                        img{
+                            opacity: 0.4;
+                            filter: alpha(opacity=40);
+                        }
+                    </style>
+                <div class="card text-center" style="width:500px">
+
+                    <img id="img_categorie" class="card-img-top" src="{% static 'img/categorie_img.jpg' %}" alt="Card image">
+                    <div class="card-img-overlay">
+                        <h2 class="card-title">Categorie Prodotti</h2>
+                        <h5 class="card-text" style="height: 10rem;">Aggiungi, cerca, elenca le categorie.</h5>
+                        <div class="card-footer">
+                            <a href="/categorie/create" class="btn btn-success">Aggiungi</a>
+                            <a href="#" class="btn btn-secondary">Cerca</a>
+                            <a href="#" class="btn btn-info">Elenca</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card text-center" style="width:500px">
+                    <img id="img_prodotti" class="card-img-top" src="{% static 'img/products.jpg' %}" alt="Card image">
+                    <div class="card-img-overlay">
+                        <h2 class="card-title" >Prodotti</h2>
+                        <h5 class="card-text" style="height: 10rem;">Aggiungi, cerca, elenca i prodotti.</h5>
+                        <div class="card-footer">
+                            <a href="/prodotti/create" class="btn btn-success">Aggiungi</a>
+                            <a href="#" class="btn btn-secondary">Cerca</a>
+                            <a href="#" class="btn btn-info">Elenca</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    {% endblock content %}
+{% endif %}
