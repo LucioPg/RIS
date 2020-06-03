@@ -5,7 +5,7 @@
     <div class="container">
         <ul>
             {% for categoria in categorie %}
-                <li>{{ categoria.name }} --- id={{ categoria.id }}</li>
+                <li><a href="/categoria/{{ categoria.id }}">{{ categoria.name }}</a> </li>
             {% endfor %}
         </ul>
     </div>

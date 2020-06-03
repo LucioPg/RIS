@@ -1,0 +1,18 @@
+{% extends 'main/base.html' %}
+{% block title %}
+Elenco prodotti per categoria
+{% endblock title %}
+{% block content %}
+    <br>
+    <div class="container">
+    <select>
+
+    </select>
+    <hr>
+    <ul>
+        {% for prodotto in prodotti %}
+                <li>{{ prodotto.name }} --- id={{ prodotto.categoria }}</li>
+        {% endfor %}
+    </ul>
+    </div>
+{% endblock content %}

@@ -1,7 +1,6 @@
 {% extends 'main/base.html' %}
 {% load static %}
 {% block title %} Dashboard {% endblock title %}
-{% if user.is_authenticated %}
     {% block content %}
         <h1>Dashboard</h1>
 
@@ -22,7 +21,7 @@
                         <div class="card-footer">
                             <a href="/categorie/create" class="btn btn-success">Aggiungi</a>
                             <a href="#" class="btn btn-secondary">Cerca</a>
-                            <a href="#" class="btn btn-info">Elenca</a>
+                            <a href="/categorie" class="btn btn-info">Elenca</a>
                         </div>
                     </div>
                 </div>
@@ -32,14 +31,12 @@
                         <h2 class="card-title" >Prodotti</h2>
                         <h5 class="card-text" style="height: 10rem;">Aggiungi, cerca, elenca i prodotti.</h5>
                         <div class="card-footer">
-                            <a href="/prodotti/create" class="btn btn-success">Aggiungi</a>
+                            <a href="/prodotto/create" class="btn btn-success">Aggiungi</a>
                             <a href="#" class="btn btn-secondary">Cerca</a>
-                            <a href="#" class="btn btn-info">Elenca</a>
+                            <a href="/prodotti" class="btn btn-info">Elenca</a>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     {% endblock content %}
-{% endif %}

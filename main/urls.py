@@ -6,4 +6,6 @@ urlpatterns = [
     path('categoria/<int:id>', views.categoria, name='categoria'),
     path('categorie/', views.categorie, name='categorie'),
     path('categorie/create', views.categorie_create, name='categorie_create'),
+    path('prodotto/create', views.prodotto_create, name='prodotto_create'),
+    path('prodotti/', views.prodotti, name='prodotti'),
 ]
