@@ -8,6 +8,7 @@ class CategoriaProdotto(models.Model):
     name = models.CharField(max_length=200)
     has_barcode = models.BooleanField()
     unit = models.IntegerField(default=1)
+    total_prd = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
