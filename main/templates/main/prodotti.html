@@ -5,9 +5,14 @@ Elenco prodotti per categoria
 {% block content %}
     <br>
     <div class="container">
-    <select>
-
-    </select>
+        <form method="get" accept-charset="utf-8">
+        <select name="categoria" id="categoria">
+{#            <option value="Z">Select a brand</option>#}
+            {% for categoria in categorie %}
+                <option value="{{ categoria.id}}">{{ categoria.name }}</option>
+            {% endfor %}
+        </select>
+        </form>
     <hr>
     <ul>
         {% for prodotto in prodotti %}

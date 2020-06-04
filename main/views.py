@@ -65,14 +65,25 @@ def prodotto_create(request):
 
 def prodotti(request):
     if request.method == 'GET':
-        form = ElencoProdotti(request.GET)
-        print({k:v for k,v in request.GET.items()})
         categoria = min([cat.id for cat in CategoriaProdotto.objects.all()])
         prodotti = Prodotto.objects.filter(category=categoria)
         context = {
+            'categorie': CategoriaProdotto.objects.all(),
             'categoria': categoria,
             'prodotti': prodotti,
         }
         return render(request, 'main/prodotti.html', context)
+    # else:
+    #     form = ElencoProdotti(request.POST)
+    #     if form.is_valid():
+    #         categoria = form.cleaned_data['categoria']
+    #         prodotti = Prodotto.objects.filter(category=categoria)
+    #         context = {
+    #             'categorie': CategoriaProdotto.objects.all(),
+    #             'categoria': categoria,
+    #             'prodotti': prodotti,
+    #         }
+    #         return render(request, 'main/prodotti.html', context)
+
 
 
