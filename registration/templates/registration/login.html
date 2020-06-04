@@ -8,11 +8,17 @@ Login
 {% load crispy_forms_tags %}
     <br>
     <div class="container">
-        <form method="post" class="form-group">
-            {% csrf_token %}
-            {{ form|crispy }}
-            <button type="submit" class="btn btn-success">Login</button>
-            <p> <a href="/registration">Registrati</a> </p>
-        </form>
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <form method="post" class="form-group">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-success">Login</button>
+                </form>
+            </div>
+            <div class="card-footer">
+                <p> <a href="/registration">Registrati</a> </p>
+            </div>
+        </div>
     </div>
 {% endblock %}
