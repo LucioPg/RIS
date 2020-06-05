@@ -1,5 +1,5 @@
 from django import forms
-from main.models import CategoriaProdotto
+from main.models import CategoriaProdotto, Prodotto
 
 class CreaCategoria(forms.Form):
     """Form per la creazione di una nuova categoria prodotti."""
@@ -23,3 +23,12 @@ class ElencoProdotti(forms.Form):
     # barcode = forms.CharField(label='Barcode', max_length=20)
     # qnt = forms.IntegerField(label='Quantità', initial=1)
 
+class ProdottoUpdate(forms.ModelForm):
+    class Meta:
+        model = Prodotto
+        fields = [
+            'name',
+            'barcode',
+            'qnt',
+            'category'
+        ]

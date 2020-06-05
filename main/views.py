@@ -1,9 +1,9 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from .models import CategoriaProdotto, Prodotto
-from .forms import CreaCategoria, CreaProdotto, ElencoProdotti
+from .forms import CreaCategoria, CreaProdotto, ElencoProdotti, ProdottoUpdate
 
 
 
@@ -22,6 +22,7 @@ def categoria(request, id):
 def prodotto(request, id):
     prodotto = Prodotto.objects.get(id=id)
     context = {
+        'id': id,
         'categoria': prodotto.category,
         'nome': prodotto.name,
         'qnt': prodotto.qnt,
@@ -98,3 +99,10 @@ def prodotti(request):
 
 
 
+def prodotto_update(request, id):
+    instance = get_object_or_404(Prodotto, id=id)
+    form = ProdottoUpdate(request.POST or None, instance=instance)
+    if form.is_valid():
+        form.save()
+        return redirect(f'/prodotto/{id}')
+    return render(request, 'main/prodotto_create.html', {'form': form})
