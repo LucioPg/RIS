@@ -1,0 +1,35 @@
+{% extends 'main/base.html' %}
+{% block title %}Prodotto - {{ nome }} {% endblock title %}
+{% block content %}
+    <h1>Prodotto</h1>
+    <div class="container">
+    <h3><strong>{{ nome }}</strong></h3>
+    <h4><a href="/categoria/{{ categoria.id }}">{{ categoria.name }}</a></h4>
+    <h4>Quantita: {{ qnt }}</h4>
+    <h4>Barcode: {{ barcode }}</h4>
+{#    <li><a href="/categoria/{{ categoria.id }}">{{ categoria.name }}</a> </li>#}
+    </div>
+{% endblock content %}
+
+{% block footer %}
+<div class="container"></div>
+
+
+<style>
+#btn-container{
+    margin-left:100px;
+}
+</style>
+    <div id="btn-container">
+    <a href="/prodotto/create" class="btn btn-success">Aggiungi</a>
+    <a href="#" class="btn btn-secondary">Cerca</a>
+    <a href="#" class="btn btn-info">Elenca</a>
+    </div>
+{#<button id="nuovaCategoria" class="btn btn-primary" >Aggiungi</button>#}
+{#<script type="text/javascript">#}
+{#    document.getElementById("nuovaCategoria").onclick = function () {#}
+{#        location.href = "/categorie/create";#}
+{#    };#}
+{#</script>#}
+</div>
+{% endblock footer %}

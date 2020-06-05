@@ -6,7 +6,9 @@ Elenco prodotti per categoria
     <br>
     <div class="container">
         <form method="get" accept-charset="utf-8">
-        <select name="categoria" id="categoria">
+        {% csrf_token %}
+        {% load crispy_forms_tags %}
+        <select class="custom-select" name="categoria" id="categoria">
 {#            <option value="Z">Select a brand</option>#}
             {% for categoria in categorie %}
                 <option value="{{ categoria.id}}">{{ categoria.name }}</option>
@@ -16,7 +18,7 @@ Elenco prodotti per categoria
     <hr>
     <ul>
         {% for prodotto in prodotti %}
-                <li>{{ prodotto.name }} --- id={{ prodotto.categoria }}</li>
+                <li><a href="/prodotto/{{ prodotto.id }}">{{ prodotto.name }}</a> --- Quantità: {{ prodotto.total }}</li>
         {% endfor %}
     </ul>
     </div>

@@ -19,6 +19,17 @@ def categoria(request, id):
     return render(request, 'main/categoria.html', {'categoria': ls, 'prodotti': products})
 
 @login_required(login_url='login')
+def prodotto(request, id):
+    prodotto = Prodotto.objects.get(id=id)
+    context = {
+        'categoria': prodotto.category,
+        'nome': prodotto.name,
+        'qnt': prodotto.qnt,
+        'barcode': prodotto.barcode,
+        }
+    return render(request, 'main/prodotto.html', context)
+
+@login_required(login_url='login')
 def categorie(request):
 
     ls = CategoriaProdotto.objects.all()
