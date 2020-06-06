@@ -5,7 +5,7 @@
     <div class="container">
         <ul>
             {% for categoria in categorie %}
-                <li><a href="/categoria/{{ categoria.id }}">{{ categoria.name }}</a> </li>
+                <li><a href="/categoria/{{ categoria.id }}">{{ categoria.name }}</a> Quantità: {{ categoria.total_prd }}</li>
             {% endfor %}
         </ul>
     </div>

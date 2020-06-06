@@ -41,7 +41,6 @@ def categorie_create(request):
     if request.user.is_superuser:
         if request.method == "POST":
             form = CreaCategoria(request.POST)
-            print(request.POST)
             if form.is_valid():
                 name = form.cleaned_data["name"]
                 unit = form.cleaned_data["unit"]
@@ -63,9 +62,8 @@ def prodotto_create(request):
             if form.is_valid():
                 name = form.cleaned_data['name']
                 barcode = form.cleaned_data['barcode']
-                qnt = form.cleaned_data['qnt']
                 category = form.cleaned_data['category']
-                prodotto = Prodotto(name=name, barcode=barcode, qnt=qnt, category=category)
+                prodotto = Prodotto(name=name, barcode=barcode, category=category)
                 if 'SalvaProdotto' in request.POST:
                     prodotto.save()
                 form = CreaProdotto()
@@ -106,3 +104,16 @@ def prodotto_update(request, id):
         form.save()
         return redirect(f'/prodotto/{id}')
     return render(request, 'main/prodotto_create.html', {'form': form})
+
+def prodotto_delete(request, id):
+    instance = get_object_or_404(Prodotto, id=id)
+    if instance:
+        instance.delete()
+        categoria = min([cat.id for cat in CategoriaProdotto.objects.all()])
+        prodotti = Prodotto.objects.filter(category=categoria)
+        context = {
+            'categorie': CategoriaProdotto.objects.all(),
+            'categoria': categoria,
+            'prodotti': prodotti,
+        }
+        return render(request, 'main/prodotti.html', context)

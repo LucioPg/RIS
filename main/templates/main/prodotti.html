@@ -9,7 +9,6 @@ Elenco prodotti per categoria
         {% csrf_token %}
         {% load crispy_forms_tags %}
         <select class="custom-select" name="categoria" id="categoria">
-{#            <option value="Z">Select a brand</option>#}
             {% for categoria in categorie %}
                 <option value="{{ categoria.id}}">{{ categoria.name }}</option>
             {% endfor %}
@@ -18,7 +17,8 @@ Elenco prodotti per categoria
     <hr>
     <ul>
         {% for prodotto in prodotti %}
-                <li><a href="/prodotto/{{ prodotto.id }}">{{ prodotto.name }}</a> --- Quantità: {{ prodotto.total }}</li>
+{#                <li><a href="/prodotto/{{ prodotto.id }}">{{ prodotto.name }}</a> --- Quantità: {{ prodotto.total }}</li>#}
+                <li><a href="/prodotto/{{ prodotto.id }}">{{ prodotto.name }}</a></li>
         {% endfor %}
     </ul>
     </div>

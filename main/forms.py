@@ -11,7 +11,6 @@ class CreaProdotto(forms.Form):
     """Form per la creazione di un prodotto"""
     name = forms.CharField(label='Nome', max_length=200)
     barcode = forms.CharField(label='Barcode', max_length=20)
-    qnt = forms.IntegerField(label='Quantità', initial=1)
     # ls = [categoria.name for categoria in CategoriaProdotto.objects.all()]
     # category = forms.ChoiceField(choices=ls)
     category = forms.ModelChoiceField(queryset=CategoriaProdotto.objects.all(), label='categoria', widget=forms.Select)
@@ -29,6 +28,5 @@ class ProdottoUpdate(forms.ModelForm):
         fields = [
             'name',
             'barcode',
-            'qnt',
             'category'
         ]
