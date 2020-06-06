@@ -3,44 +3,15 @@
 {% block content %}
     <br>
     <div class="container">
-        <form method="post" action="/categorie/create">
-        {% csrf_token %}
-          <div class="form-row">
-            <div class="col">
-              <label for="nomecategoria"><strong>Nome:</strong></label>
-              <input id="name" name="name" type="text" class="form-control" placeholder="Categoria">
-            </div>
-          </div>
-          <br>
-          <div class="form-group">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="barcode" name="barcode" checked="checked">
-              <label class="form-check-label" for="barcode">
-                  <strong> Barcode</strong>
-              </label>
-            </div>
-            <br>
-            <p><strong>Quantità per unità:</strong>
-                <div class="spinbox" id="mySpinbox">
-                <input type="number" name="unit" value="1" class="vIntegerField" required id="unit" min="1">
-                </div>
-            </p>
 
-          </div>
+        <form method="post" class="form-group">
+            {% load crispy_forms_tags %}
+            {% csrf_token %}
+             {% crispy form %}
+
         <button class="btn btn-primary" type="submit", name="SalvaCategoria">Salva</button>
         <button class="btn btn-secondary" type="clear", name="Reset">Reset</button>
         </form>
     </div>
 
-
-
 {% endblock content %}
-{##}
-
-
-{#{% block footer %}#}
-{#<button id="myButton" class="float-left submit-button" >Home</button>#}
-{#<h1><strong>AOOOO</strong></h1>#}
-{#<button class="btn btn-primary" type="submit", name="goCreateCat">Aggiungi</button>#}
-{##}
-{#{% endblock footer %}#}

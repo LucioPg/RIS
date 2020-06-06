@@ -1,12 +1,44 @@
 {% extends 'main/base.html' %}
 {% block title %}DSM - {{ categoria.name }} {% endblock title %}
 {% block content %}
-    <h1>{{ categoria.name }}</h1>
+    <h1>Categoria</h1>
     <div class="container">
+        <h2>{{ categoria.name }}</h2>
+        <h5><strong>Barcode:</strong>{{ categoria.has_barcode }}</h5>
+        <h5><strong>Unità:</strong>{{ categoria.unit }}</h5>
+        <h5>Prodotti:</h5>
+        {%  if prodotti %}
         <ul>
             {% for prodotto in prodotti %}
                 <li>{{ prodotto.name }}</li>
             {% endfor %}
         </ul>
+        {% else %}
+        <p><strong>Questa categoria non ha nessun prodotto</strong></p>
+        {% endif %}
     </div>
 {% endblock content %}
+
+{% block footer %}
+<div class="container"></div>
+
+
+<style>
+#btn-container{
+    margin-left:100px;
+}
+</style>
+    <div id="btn-container">
+    <a href="/categorie/create" class="btn btn-success">Aggiungi</a>
+    <a href="#" class="btn btn-secondary">Cerca</a>
+    <a href="/categoria/{{ categoria.id }}/update" class="btn btn-warning">Modifica</a>
+    <a href="/categoria/{{ categoria.id }}/delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this?')">Cancella</a>
+    </div>
+{#<button id="nuovaCategoria" class="btn btn-primary" >Aggiungi</button>#}
+{#<script type="text/javascript">#}
+{#    document.getElementById("nuovaCategoria").onclick = function () {#}
+{#        location.href = "/categorie/create";#}
+{#    };#}
+{#</script>#}
+</div>
+{% endblock footer %}
