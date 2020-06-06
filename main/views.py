@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from .models import CategoriaProdotto, Prodotto
-from .forms import CreaCategoria, CreaProdotto, ElencoProdotti, ProdottoUpdate
+from .forms import CreaCategoria, CreaProdotto, ElencoProdotti, ProdottoUpdate, CategoriaProdottoUpdate
 
 
 
@@ -25,7 +25,7 @@ def prodotto(request, id):
         'id': id,
         'categoria': prodotto.category,
         'nome': prodotto.name,
-        'qnt': prodotto.qnt,
+        # 'qnt': prodotto.qnt,
         'barcode': prodotto.barcode,
         }
     return render(request, 'main/prodotto.html', context)
@@ -83,27 +83,9 @@ def prodotti(request):
             'prodotti': prodotti,
         }
         return render(request, 'main/prodotti.html', context)
-    # else:
-    #     form = ElencoProdotti(request.POST)
-    #     if form.is_valid():
-    #         categoria = form.cleaned_data['categoria']
-    #         prodotti = Prodotto.objects.filter(category=categoria)
-    #         context = {
-    #             'categorie': CategoriaProdotto.objects.all(),
-    #             'categoria': categoria,
-    #             'prodotti': prodotti,
-    #         }
-    #         return render(request, 'main/prodotti.html', context)
 
 
 
-def prodotto_update(request, id):
-    instance = get_object_or_404(Prodotto, id=id)
-    form = ProdottoUpdate(request.POST or None, instance=instance)
-    if form.is_valid():
-        form.save()
-        return redirect(f'/prodotto/{id}')
-    return render(request, 'main/prodotto_create.html', {'form': form})
 
 def prodotto_delete(request, id):
     instance = get_object_or_404(Prodotto, id=id)
@@ -117,3 +99,37 @@ def prodotto_delete(request, id):
             'prodotti': prodotti,
         }
         return render(request, 'main/prodotti.html', context)
+
+
+def prodotto_update(request, id):
+    instance = get_object_or_404(Prodotto, id=id)
+    print(request)
+    form = ProdottoUpdate(request.POST or None, instance=instance)
+    if form.is_valid():
+        form.save()
+        return redirect(f'/prodotto/{id}')
+    return render(request, 'main/prodotto_create.html', {'form': form})
+
+def categoria_update(request, id):
+    instance = get_object_or_404(CategoriaProdotto, id=id)
+    print(request)
+    form = CategoriaProdottoUpdate(request.POST or None, instance=instance)
+    print(form)
+    if form.is_valid():
+        form.save()
+        return redirect(f'/categoria/{id}')
+    return render(request, 'main/categorie_create.html', {'form': form})
+
+def categoria_delete(request, id):
+    instance = get_object_or_404(CategoriaProdotto, id=id)
+    if instance:
+        instance.delete()
+        # categoria = min([cat.id for cat in CategoriaProdotto.objects.all()])
+        # prodotti = Prodotto.objects.filter(category=categoria)
+        context = {
+            'categorie': CategoriaProdotto.objects.all(),
+            'categoria': categoria,
+            'prodotti': prodotti,
+        }
+        # return render(request, 'main/categorie.html', context)
+        return render(request, 'main/categorie.html')
