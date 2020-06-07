@@ -11,10 +11,22 @@
                             opacity: 0.4;
                             filter: alpha(opacity=40);
                         }
-                    </style>
+                </style>
+                <div class="card text-center" style="width:500px">
+                    <img id="img_prodotti" class="card-img-top" src="{% static 'img/inventory.jpg' %}" alt="Card image">
+                    <div class="card-img-overlay">
+                        <h2 class="card-title" >Inventario</h2>
+                        <h5 class="card-text" style="height: 10rem;">Aggiungi, cerca, elenca i prodotti.</h5>
+                        <div class="card-footer">
+                            <a href="/prodotto/create" class="btn btn-success">Aggiungi</a>
+                            <a href="#" class="btn btn-secondary">Cerca</a>
+                            <a href="/prodotti" class="btn btn-info">Elenca</a>
+                        </div>
+                    </div>
+                </div>
                 <div class="card text-center" style="width:500px">
 
-                    <img id="img_categorie" class="card-img-top" src="{% static 'img/categorie_img.jpg' %}" alt="Card image">
+                    <img id="img_categorie" class="card-img-top" src="{% static 'img/categories.jpg' %}" alt="Card image">
                     <div class="card-img-overlay">
                         <h2 class="card-title">Categorie Prodotti</h2>
                         <h5 class="card-text" style="height: 10rem;">Aggiungi, cerca, elenca le categorie.</h5>

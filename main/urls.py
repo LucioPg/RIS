@@ -13,4 +13,8 @@ urlpatterns = [
     path('prodotto/<int:id>', views.prodotto, name='prodotto'),
     path('prodotto/<int:id>/update', views.prodotto_update, name='prodotto_update'),
     path('prodotto/<int:id>/delete', views.prodotto_delete, name='prodotto_delete'),
+    path('inventario/', views.InventarioListView.as_view(), name='categoria_changelist'),
+    path('inventario/add/', views.InventarioCreateView.as_view(), name='item_add'),
+    path('inventario/<int:pk>/', views.InventarioUpdateView.as_view(), name='item_change'),
+    path('ajax/load_products/', views.ajax_load_products, name='ajax_load_products'),
 ]

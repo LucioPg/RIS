@@ -1,7 +1,7 @@
 from django import forms
-from main.models import CategoriaProdotto, Prodotto
+from main.models import CategoriaProdotto, Prodotto, Inventario
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column, Field
+from crispy_forms.layout import Layout, Submit, Row, Column, Field, Reset
 
 
 class CustomCheckbox(Field):
@@ -21,13 +21,16 @@ class CreaCategoria(forms.Form):
             'name',
             CustomCheckbox('barcode'),
             'unit',
+
+            Submit('submit', 'Salva'),
+            Reset('submit', 'Reset')
         )
 
 
 class CreaProdotto(forms.Form):
     """Form per la creazione di un prodotto"""
     name = forms.CharField(label='Nome', max_length=200)
-    barcode = forms.CharField(label='Barcode', max_length=20)
+    # barcode = forms.CharField(label='Barcode', max_length=20)
     # ls = [categoria.name for categoria in CategoriaProdotto.objects.all()]
     # category = forms.ChoiceField(choices=ls)
     category = forms.ModelChoiceField(queryset=CategoriaProdotto.objects.all(), label='categoria', widget=forms.Select)
@@ -44,7 +47,7 @@ class ProdottoUpdate(forms.ModelForm):
         model = Prodotto
         fields = [
             'name',
-            'barcode',
+            # 'barcode',
             'category'
         ]
 
@@ -61,3 +64,29 @@ class CategoriaProdottoUpdate(forms.ModelForm):
             'has_barcode': 'Barcode',
             'unit': 'Unità'
         }
+
+
+class AddItem(forms.Form):
+    """ Aggiunge un item all'inventario"""
+
+#     category = forms.ModelChoiceField(queryset=CategoriaProdotto.objects.all(), label='categoria', widget=forms.Select)
+#     prodotto = forms.ModelChoiceField(queryset=Prodotto.objects.filter(category=category), label='prodotto', widget=forms.Select)
+#     barcode = forms.CharField(max_length=20)
+
+class InventoryForm(forms.ModelForm):
+    class Meta:
+        model = Inventario
+        fields = ('categoria', 'prodotto', 'barcode')
+
+    def __init__(self, *args, **kwargs):
+        super(InventoryForm, self).__init__(*args, **kwargs)
+        self.fields['prodotto'].queryset = Prodotto.objects.none()
+
+        if 'categoria' in self.data:
+            try:
+                category_id = int(self.data.get('categoria'))
+                self.fields['prodotto'].queryset = Prodotto.objects.filter(category=category_id).order_by('name')
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty City queryset
+        elif self.instance.pk:
+            self.fields['prodotto'].queryset = self.instance.categoria.prodotto_set.order_by('name')
