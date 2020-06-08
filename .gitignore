@@ -6,3 +6,4 @@
 /geckodriver.log
 /main/templates/main/test_dashboard.html
 /main/templates/main/dashboard_2.html
+*.bkp
