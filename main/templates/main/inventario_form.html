@@ -3,16 +3,20 @@
 {% block title %}Inventario{% endblock title %}
 
 {% block content %}
-    <h2>Person Form</h2>
-
-  <form method="post" id="inventarioForm" data-category-url="{% url 'ajax_load_products' %}" novalidate>
-    {% csrf_token %}
-    <table>
-      {{ form.as_table }}
-    </table>
-    <button type="submit">Save</button>
-    <a href="{% url 'categoria_changelist' %}">Nevermind</a>
-  </form>
+    <h2>Aggiungi Prodotto all'inventario</h2>
+    <div class="container">
+      <form method="post" id="inventarioForm" data-category-url="{% url 'ajax_load_products' %}" novalidate>
+        {% csrf_token %}
+        {% load crispy_forms_tags %}
+        <table>
+          {{ form|crispy }}
+        </table>
+        <button type="submit" class="btn btn-success">Save</button>
+        <button type="reset" class="btn btn-info">Reset</button>
+{#        <button class="btn btn-outline-secondary" onclick="location.href='{% url 'categoria_changelist' %}'">Indietro</button>#}
+        <a class="btn btn-outline-secondary" href="{% url 'categoria_changelist' %}">Annulla</a>
+      </form>
+    </div>
 
   <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
   <script>

@@ -17,4 +17,5 @@ urlpatterns = [
     path('inventario/add/', views.InventarioCreateView.as_view(), name='item_add'),
     path('inventario/<int:pk>/', views.InventarioUpdateView.as_view(), name='item_change'),
     path('ajax/load_products/', views.ajax_load_products, name='ajax_load_products'),
+    path('logout/', views.logout, name='logout')
 ]

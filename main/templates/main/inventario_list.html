@@ -1,38 +1,84 @@
 {% extends 'main/base.html' %}
 
-{% block title %}Human Resources Module{% endblock %}
+{% block title %}Inventario - lista{% endblock %}
 
 {% block content %}
-  <h2>Human Resources Module » People Management</h2>
+  <h2>Inventario</h2>
+    <div class="container">
+      <div>
+          <table>
+              <td>
+                           <a class="btn btn-outline-primary" href="{% url 'item_add' %}">Aggiungi</a>
+              </td>
+              <td>
+                  <form method="get" action="/inventario">
+                       <input type="text" name="searchCat" placeholder="cerca categoria">
+                       </form>
+              </td>
+              <td>
+                  <form method="get" action="/inventario">
+                       <input type="text" name="searchBar" placeholder="cerca barcode">
+                  </form>
+              </td>
+              <td>
+                  <form method="get" action="/inventario">
+                       <input type="text" name="searchPro" placeholder="cerca prodotto">
+                  </form>
+              </td>
+          </table>
 
-  <p>
-    <a href="{% url 'item_add' %}">Add item</a>
-  </p>
 
-  <table border="1">
-    <thead>
-      <tr>
-        <th>id</th>
-        <th>Categoria</th>
-        <th>Prodotto</th>
-        <th>Barcode</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for item in inventario %}
-        <tr>
-{#          <td><a href="{% url 'item_change' item.id %}">{{ item.id }}</a></td>#}
-          <td><a href="/inventario/{{ item.id }}">{{ item.id }}</a></td>
-          <td>{{ item.categoria.name }}</td>
-            <td>{{ item.prodotto.name }}</td>
-            <td>{{ item.barcode }}</td>
-        </tr>
-      {% empty %}
-        <tr>
-          <td colspan="4">No item in the database. <a href="{% url 'item_add' %}">Add the first item</a>.</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">id</th>
+            <th scope="col">Categoria</th>
+            <th scope="col">Prodotto</th>
+            <th scope="col">Barcode</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in inventario %}
+            <tr scope="row">
+    {#          <td><a href="{% url 'item_change' item.id %}">{{ item.id }}</a></td>#}
+              <td><a href="/inventario/{{ item.id }}">{{ item.id }}</a></td>
+              <td>{{ item.categoria.name }}</td>
+                <td>{{ item.prodotto.name }}</td>
+                <td>{{ item.barcode }}</td>
+            </tr>
+          {% empty %}
+            <tr scope="row">
+              <td colspan="4">No item in the database. <a href="{% url 'item_add' %}">Add the first item</a>.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% if is_paginated %}
+          <nav aria-label="Page navigation example">
+              <ul class="pagination">
+                {% if page_obj.has_previous %}
+                  <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                  <li class="page-item disabled"><span class="page-link" aria-hidden="true">&laquo;</span></li>
+                {% endif %}
+                {% for i in paginator.page_range %}
+                  {% if page_obj.number == i %}
+                    <li class="active" aria-current="page"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+                  {% else %}
+                    <li><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                  <li><a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                  <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+                {% endif %}
+              </ul>
+          </nav>
+    {% endif %}
+    </div>
+
 
 {% endblock %}

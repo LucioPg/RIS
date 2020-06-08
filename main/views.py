@@ -15,6 +15,9 @@ def home(request):
     return render(request, 'main/dashboard.html')
     # return render(request, 'main/test_dashboard.html')
 
+def logout(request):
+    return render(request, 'main/logout.html')
+
 @login_required(login_url='login')
 def categoria(request, id):
     ls = CategoriaProdotto.objects.get(id=id)
@@ -185,7 +188,50 @@ class InventarioListView(ListView):
     model = Inventario
     # fields = ('categoria', 'prodotto', 'barcode')
     # success_url = reverse_lazy('categoria_changelist')
+    paginate_by = 10
+    queryset = Inventario.objects.all()
     context_object_name = 'inventario'
+    ordering = ['data']
+    q_dict = {
+        'searchCat': 'categoria__name',
+        'searchPro': 'prodotto__name',
+        'searchBar': 'barcode',
+    }
+
+
+    def get_queryset(self):
+        # query_cat = self.request.GET.get('searchCat')
+        # query_pro = self.request.GET.get('searchPro')
+        # query_bar = self.request.GET.get('searchBar')
+        # if query_cat:
+        #     object_list = self.model.objects.filter(categoria__name__icontains=query_cat)
+        #     if object_list:
+        #         return object_list
+        #     else:
+        #         object_list = self.model.objects.none()
+        # else:
+        #     object_list = self.model.objects.all()
+        # return object_list
+        for search in self.q_dict:
+            if search in self.request.GET:
+                return self.query_obj(search)
+        return self.query_obj('')
+
+
+    # todo da migliorare (concatenare i filtri
+    def query_obj(self, obj):
+        query_obj = self.request.GET.get(obj)
+        if query_obj:
+            fil = {f'{self.q_dict[obj]}__icontains': query_obj}
+            object_list = self.model.objects.filter(**fil)
+            if object_list:
+                return object_list
+            else:
+                object_list = self.model.objects.none()
+        else:
+            object_list = self.model.objects.all()
+        return object_list
+
 
 def ajax_load_products(request):
     category_id = request.GET.get('categoria')
