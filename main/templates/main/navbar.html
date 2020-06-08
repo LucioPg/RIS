@@ -17,6 +17,10 @@
         </ul>
     </div>
     <span class="navbar-text">
-    Navbar text with an inline element
+        {%  if user.is_authenticated %}
+            benvenuto, {{ user }} <a href="logout">logout</a>
+        {% else %}
+            <a href="/login">login</a>
+        {% endif %}
     </span>
 </nav>
