@@ -13,5 +13,19 @@ Prodotto
             <button class="btn btn-primary" type="submit", name="SalvaProdotto">Salva</button>
             <button class="btn btn-secondary" type="clear", name="Reset">Reset</button>
         </form>
+    <table>
+            {% if barcode_list %}
+              {% for barcode in barcode_list %}
+              <tr>
+                  <p>{{ barcode }}</p>
+              </tr>
+              {% endfor %}
+
+            {% else %}
+                <td>
+                  <p>niente</p>
+              </td>
+            {% endif %}
+    </table>
     </div>
 {% endblock content %}

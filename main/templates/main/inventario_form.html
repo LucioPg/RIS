@@ -3,7 +3,7 @@
 {% block title %}Inventario{% endblock title %}
 
 {% block content %}
-    <h2>Aggiungi Prodotto all'inventario</h2>
+    <h2>Aggiungi Prodotto all'inventario {{ inventario.id }} ***</h2>
     <div class="container">
       <form method="post" id="inventarioForm" data-category-url="{% url 'ajax_load_products' %}" novalidate>
         {% csrf_token %}
@@ -11,10 +11,26 @@
         <table>
           {{ form|crispy }}
         </table>
+          <table>
+            {% if barcode_list %}
+              {% for barcode in barcode_list %}
+              <td>
+                  <p>barcode</p>
+              </td>
+              {% endfor %}
+
+            {% else %}
+                <td>
+                  <p>niente</p>
+              </td>
+            {% endif %}
+          </table>
         <button type="submit" class="btn btn-success">Save</button>
         <button type="reset" class="btn btn-info">Reset</button>
 {#        <button class="btn btn-outline-secondary" onclick="location.href='{% url 'categoria_changelist' %}'">Indietro</button>#}
-        <a class="btn btn-outline-secondary" href="{% url 'categoria_changelist' %}">Annulla</a>
+{#        <a class="btn btn-outline-warning" href="{% url 'categoria_changelist' %}">Cancella</a>#}
+        <a href="{% url 'item_delete' inventario.id %}" class="btn btn-danger" onclick="return confirm('Sicuro di voler cancellare?')">Cancella</a>
+          <a class="btn btn-outline-secondary" href="{% url 'categoria_changelist' %}">Annulla</a>
       </form>
     </div>
 

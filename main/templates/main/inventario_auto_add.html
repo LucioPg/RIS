@@ -1,0 +1,94 @@
+{% extends 'main/base.html' %}
+    {% load static %}
+{% block title %}Caricamento Barcode{% endblock title %}
+{% block content %}
+    <h2>Carica i Prodotti sull'inventario</h2>
+    <div class="container">
+      <form method="post" id="inventarioForm" data-category-url="{% url 'ajax_load_products' %}" novalidate>
+        {% csrf_token %}
+        {% load crispy_forms_tags %}
+        <table>
+
+          {{ form|crispy }}
+
+        </table>
+
+        <button type="submit" class="btn btn-success">Save</button>
+        <button type="reset" class="btn btn-info">Reset</button>
+{#        <button class="btn btn-outline-secondary" onclick="location.href='{% url 'categoria_changelist' %}'">Indietro</button>#}
+        <a class="btn btn-outline-secondary" href="{% url 'categoria_changelist' %}">Annulla</a>
+      </form>
+
+    </div>
+    <br>
+    <div>
+     <div>
+          <table id="barcodesTable"> </table>
+          </div>
+    </div>
+
+{% endblock content %}
+
+{% block customjs %}
+   <script>
+       var init;
+    const logFileText = async file => {
+        const response = await fetch(file);
+        const text = await response.text();
+        all = text.split('\n');
+        if (init !== all.length) {
+            console.log(all.length, init);
+            init = all.length;
+            console.log('changed');
+            var arr=[];
+            all.forEach(el => {
+                el=el.split(',');
+                arr.push(el);
+            });
+             console.log(arr);
+
+            createTable(arr);
+
+        }
+
+    };
+
+    function createTable(array) {
+        var content = "";
+        array.forEach(function (row) {
+            content += "<tr>";
+            row.forEach(function (cell) {
+                content += "<td>" + cell + "</td>";
+            });
+            content += "</tr>";
+        });
+        document.getElementById("barcodesTable").innerHTML = content;
+    };
+
+    let file = "{% static 'barcode.csv' %}";
+    // let file = "{{ csv }}";
+    logFileText(file);
+    setInterval(async () => {
+        await logFileText(file);
+    }, 500);
+   </script>
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+  <script>
+    $("#id_categoria").change(function () {
+        var url = $("#inventarioForm").attr("data-category-url");  // get the url of the `load_cities` view
+        var categoryId = $(this).val();  // get the selected country ID from the HTML input
+
+        jQuery.ajax({                       // initialize an AJAX request
+            url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+            data: {
+                'categoria': categoryId       // add the country id to the GET parameters
+            },
+            success: function (data) {   // `data` is the return of the `load_cities` view function
+                $("#id_prodotto").html(data);  // replace the contents of the city input with the data that came from the server
+            },
+
+
+        });
+    });
+  </script>
+{% endblock customjs %}

@@ -1,0 +1,51 @@
+{% extends 'main/base.html' %}
+    {% load static %}
+{% block title %}Barcode-table{% endblock title %}
+{% block content %}
+ <table id="barcodesTable"> </table>
+{% endblock content %}
+
+{% block customjs %}
+   <script>
+       var init;
+    const logFileText = async file => {
+        const response = await fetch(file);
+        const text = await response.text();
+        all = text.split('\n');
+        if (init !== all.length) {
+            console.log(all.length, init);
+            init = all.length;
+            console.log('changed');
+            var arr=[];
+            all.forEach(el => {
+                el=el.split(',');
+                arr.push(el);
+            });
+             console.log(arr);
+
+            createTable(arr);
+
+        }
+
+    };
+
+    function createTable(array) {
+        var content = "";
+        array.forEach(function (row) {
+            content += "<tr>";
+            row.forEach(function (cell) {
+                content += "<td>" + cell + "</td>";
+            });
+            content += "</tr>";
+        });
+        document.getElementById("barcodesTable").innerHTML = content;
+    };
+
+    let file = "{% static 'barcode.csv' %}";
+    // let file = "{{ csv }}";
+    logFileText(file);
+    setInterval(async () => {
+        await logFileText(file);
+    }, 500);
+   </script>
+{% endblock customjs %}

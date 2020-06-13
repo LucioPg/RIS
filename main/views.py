@@ -1,11 +1,35 @@
 from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
-from django.views.generic import CreateView, ListView, UpdateView
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from .models import CategoriaProdotto, Prodotto, Inventario
 from .forms import CreaCategoria, CreaProdotto, ElencoProdotti, ProdottoUpdate, CategoriaProdottoUpdate, AddItem, InventoryForm
+from django.views.decorators.csrf import csrf_exempt
+from proxy.views import proxy_view
+import os
+
+@csrf_exempt
+def myview(request, path=None):
+    if not path:
+        path = 'sta'
+    path = os.path.join(path,'Things')
+    # extra_requests_args = {...}
+    print(request.user)
+    print(request.GET)
+    for x in request.GET:
+        print(x)
+    extra_requests_args = {}
+    remoteurl = 'http://192.168.43.127:8081/' + path
+    return proxy_view(request, remoteurl, extra_requests_args)
+    # return proxy_view(request, remoteurl, {})
+
+# urlpatterns = patterns(
+# 	...
+# 	url('proxy/(?P<path>.*)', myview),
+# 	...
+# )
 
 
 
@@ -60,8 +84,45 @@ def categorie_create(request):
         return render(request, 'main/not_allowed.html')
     return render(request, 'main/categorie_create.html', {'form': form})
 
+
+class BarcodeIterator:
+    ''' Iterator class '''
+
+    def __init__(self, barcodes):
+        # Team object reference
+        self._barcodes = barcodes
+        # member variable to keep track of current index
+        self._index = 0
+
+    def __next__(self):
+        ''''Returns the next value from team object's lists '''
+        if self._index < len(self._barcodes): # Check if junior members are fully iterated or not
+            result = self._barcodes[self._index]
+            self._index += 1
+            return result
+        # End of Iteration
+        raise StopIteration
+
+class Barcodes:
+    # barcode_list = set()
+    barcode_list =  {'8032089001236','8032089001237', '8032089001238'}
+
+    def clear(self):
+        self.barcode_list.clear()
+
+    def add(self, x):
+        self.barcode_list.add(x)
+
+    def remove(self, x):
+        self.barcode_list.remove(x)
+
+    def __iter__(self):
+        return BarcodeIterator(list(self.barcode_list))
+
 @login_required(login_url='login')
-def prodotto_create(request):
+def prodotto_create(request, barcode_list=Barcodes()):
+    # barcode_list = {'8032089001236','8032089001237', '8032089001238'}
+    barcode_list = barcode_list
     if request.user.is_superuser:
     # if True:
         if request.method == 'POST':
@@ -79,7 +140,7 @@ def prodotto_create(request):
             form = CreaProdotto()
     else:
         return render(request, 'main/not_allowed.html')
-    return render(request, 'main/prodotto_create.html', {'form': form})
+    return render(request, 'main/prodotto_create.html', {'form': form, 'barcode_list': barcode_list})
 
 @login_required(login_url='login')
 def prodotti(request):
@@ -176,6 +237,13 @@ class InventarioCreateView(CreateView):
     # context_object_name = 'inventario'
     success_url = reverse_lazy('categoria_changelist')
 
+class InventarioAutoAdd(CreateView):
+    model = Inventario
+    # fields = ('categoria', 'prodotto', 'barcode')
+    form_class = InventoryForm
+    template_name = 'main/inventario_auto_add.html'
+    # context_object_name = 'inventario'
+
 
 class InventarioUpdateView(UpdateView):
     model = Inventario
@@ -197,8 +265,6 @@ class InventarioListView(ListView):
         'searchPro': 'prodotto__name',
         'searchBar': 'barcode',
     }
-
-
     def get_queryset(self):
         # query_cat = self.request.GET.get('searchCat')
         # query_pro = self.request.GET.get('searchPro')
@@ -232,9 +298,32 @@ class InventarioListView(ListView):
             object_list = self.model.objects.all()
         return object_list
 
+# @login_required(login_url='login')
+# def inventario_delete_item(request, id):
+#     instance = get_object_or_404(Inventario, id=id)
+#     if instance:
+#         instance.delete()
+#         # categoria = min([cat.id for cat in CategoriaProdotto.objects.all()])
+#         # prodotti = Prodotto.objects.filter(category=categoria)
+#         # return render(request, 'main/categorie.html', context)
+#         return render(request, 'main/inventario_list.html')
+
+class InventarioDelete(DeleteView):
+    model = Inventario
+    form_class = InventoryForm
+    context_object_name = 'inventario'
+    success_url = reverse_lazy('categoria_changelist')
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
 
 def ajax_load_products(request):
     category_id = request.GET.get('categoria')
     products = Prodotto.objects.filter(category=category_id).order_by('name')
     return render(request, 'main/prod_dropdown_list_options.html', {'products': products})
+
+def testview(request):
+
+    return render(request, 'test/test.html')
+    # return HttpResponse(test)
 

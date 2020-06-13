@@ -1,5 +1,6 @@
 from django.urls import path, include
 from . import views
+from proxy import views as pviews
 
 urlpatterns = [
     path('', views.home, name='dashboard'),
@@ -16,6 +17,13 @@ urlpatterns = [
     path('inventario/', views.InventarioListView.as_view(), name='categoria_changelist'),
     path('inventario/add/', views.InventarioCreateView.as_view(), name='item_add'),
     path('inventario/<int:pk>/', views.InventarioUpdateView.as_view(), name='item_change'),
+    path('inventario/<int:pk>/delete', views.InventarioDelete.as_view(), name='item_delete'),
+    # path('inventario/delete', views.InventarioDelete.as_view(), name='item_delete'),
     path('ajax/load_products/', views.ajax_load_products, name='ajax_load_products'),
-    path('logout/', views.logout, name='logout')
+    path('logout/', views.logout, name='logout'),
+    path('inventario/auto_add/', views.InventarioAutoAdd.as_view(), name='auto_add'),
+    path('test/', views.testview, name='test'),
+    path('proxy/<str:path>', views.myview, name='test'),
+
+    # path('test/barcode.csv.test', views.testview, name='test')
 ]

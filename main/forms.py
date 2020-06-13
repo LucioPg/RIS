@@ -30,6 +30,7 @@ class CreaCategoria(forms.Form):
 class CreaProdotto(forms.Form):
     """Form per la creazione di un prodotto"""
     name = forms.CharField(label='Nome', max_length=200)
+    # barcode_list = ['aaaa','fffff']
     # barcode = forms.CharField(label='Barcode', max_length=20)
     # ls = [categoria.name for categoria in CategoriaProdotto.objects.all()]
     # category = forms.ChoiceField(choices=ls)
@@ -74,14 +75,18 @@ class AddItem(forms.Form):
 #     barcode = forms.CharField(max_length=20)
 
 class InventoryForm(forms.ModelForm):
+
     class Meta:
         model = Inventario
-        fields = ('categoria', 'prodotto', 'barcode')
+        # fields = ('categoria', 'prodotto', 'barcode')
+        fields = ('categoria', 'prodotto', 'barcode', 'id')
 
     def __init__(self, *args, **kwargs):
         super(InventoryForm, self).__init__(*args, **kwargs)
+        # self.barcode_list = set()
         self.fields['prodotto'].queryset = Prodotto.objects.none()
-
+        # self.fields['barcode'].widget = forms.HiddenInput() # il campo barcode è stato reso invisibile
+        # self.fields['id'].widget = forms.HiddenInput() # il campo id è stato reso invisibile
         if 'categoria' in self.data:
             try:
                 category_id = int(self.data.get('categoria'))

@@ -22,4 +22,5 @@ urlpatterns = [
     path('registration/', reg_views.register, name="register"),
     path('', include('main.urls')),
     path('', include('django.contrib.auth.urls')),
+    # path('', include('proxy.urls'))
 ]
