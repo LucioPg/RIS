@@ -12,11 +12,8 @@ class Inventario(models.Model):
     barcode = models.CharField(max_length=20, default='', blank=True)
     data = models.DateTimeField(auto_now=True)
 
-    def save(self, *args, **kwargs):
-        if self.categoria.has_barcode:
-            print('@@@@@@@@@@@@@@@@@@@ barcode available')
-            save_multiple(self.categoria, self.prodotto)
-        return super(Inventario, self).save(*args, **kwargs)
+    def __str__(self):
+       return self.name
 
 # class Barcode(models.Model):
 #     """modello barcode"""

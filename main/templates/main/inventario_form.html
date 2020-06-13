@@ -29,7 +29,9 @@
         <button type="reset" class="btn btn-info">Reset</button>
 {#        <button class="btn btn-outline-secondary" onclick="location.href='{% url 'categoria_changelist' %}'">Indietro</button>#}
 {#        <a class="btn btn-outline-warning" href="{% url 'categoria_changelist' %}">Cancella</a>#}
-        <a href="{% url 'item_delete' inventario.id %}" class="btn btn-danger" onclick="return confirm('Sicuro di voler cancellare?')">Cancella</a>
+        {% if inventario.id %}
+        	<a href="{% url 'item_delete' inventario.id %}" class="btn btn-danger" onclick="return confirm('Sicuro di voler cancellare?')">Cancella</a>
+	{% endif %}
           <a class="btn btn-outline-secondary" href="{% url 'categoria_changelist' %}">Annulla</a>
       </form>
     </div>

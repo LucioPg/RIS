@@ -87,6 +87,7 @@ while True:
 		# if the barcode text is currently not in our CSV file, write
 
 		# the timestamp + barcode to disk and update the set
+		print(f"Barcode: {barcodeData}\n")
 
 		if barcodeData not in found:
 
