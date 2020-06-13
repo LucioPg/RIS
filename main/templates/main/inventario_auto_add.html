@@ -36,10 +36,21 @@
         const response = await fetch(file);
         const text = await response.text();
         all = text.split('\n');
+        last_item = all.slice(all.length - 1);
+
+        {#if (all.slice(-1)[0] === ""){#}
+        {#    last_item = all.slice(-1)[1];#}
+        {#}#}
+        {#else {#}
+        {#    last_item = all.slice([all.length - 1]);#}
+        {#}#}
+        console.log(last_item)
         if (init !== all.length) {
             console.log(all.length, init);
             init = all.length;
             console.log('changed');
+            last_item = all.slice(all.length - 1);
+            document.getElementById("id_barcode").innerHTML = last_item;
             var arr=[];
             all.forEach(el => {
                 el=el.split(',');
